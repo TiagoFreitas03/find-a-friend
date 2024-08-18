@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import { CreatePetParams, Pet } from '@/models/pet'
+import { CreatePetParams, Pet, SearchPetsFilters } from '@/models/pet'
 import { PetsRepository } from '../pets-repository'
 
 export class InMemoryPetsRepository implements PetsRepository {
@@ -30,11 +30,31 @@ export class InMemoryPetsRepository implements PetsRepository {
     return pet
   }
 
-  async searchManyByLocation(state: string, city: string) {
-    const petsFilteredByLocation = this.items.filter((pet) => {
+  async searchManyByLocation({ state, city, ...filters }: SearchPetsFilters) {
+    let petsFiltered = this.items.filter((pet) => {
       return pet.org?.state === state && pet.org?.city === city
     })
 
-    return petsFilteredByLocation
+    if (filters.age) {
+      petsFiltered = petsFiltered.filter((pet) => pet.age === filters.age)
+    }
+
+    if (filters.energyLevel) {
+      petsFiltered = petsFiltered.filter(
+        (pet) => pet.energyLevel === filters.energyLevel,
+      )
+    }
+
+    if (filters.size) {
+      petsFiltered = petsFiltered.filter((pet) => pet.size === filters.size)
+    }
+
+    if (filters.independencyLevel) {
+      petsFiltered = petsFiltered.filter(
+        (pet) => pet.independencyLevel === filters.independencyLevel,
+      )
+    }
+
+    return petsFiltered
   }
 }

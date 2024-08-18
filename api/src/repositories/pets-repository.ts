@@ -1,6 +1,6 @@
-import { CreatePetParams, Pet } from '@/models/pet'
+import { CreatePetParams, Pet, SearchPetsFilters } from '@/models/pet'
 
 export interface PetsRepository {
   create(data: CreatePetParams): Promise<Pet>
-  searchManyByLocation(state: string, city: string): Promise<Pet[]>
+  searchManyByLocation(filters: SearchPetsFilters): Promise<Pet[]>
 }

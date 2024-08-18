@@ -33,3 +33,12 @@ export interface Pet extends BasePetModel {
   images: PetImage[]
   adoptionRequirements: PetAdoptionRequirements[]
 }
+
+export interface SearchPetsFilters {
+  state: string
+  city: string
+  age?: string
+  energyLevel?: string
+  size?: string
+  independencyLevel?: string
+}

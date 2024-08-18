@@ -12,7 +12,7 @@ describe('Search Pets Use Case', () => {
   })
 
   it('should be able to search for pets by location', async () => {
-    const pet = {
+    const petData = {
       about: 'Sobre',
       age: 'Filhote',
       size: 'Pequenino',
@@ -24,7 +24,7 @@ describe('Search Pets Use Case', () => {
     }
 
     await petsRepository.create({
-      ...pet,
+      ...petData,
       name: 'Jacarei Pet',
       orgId: 'org-01',
       org: {
@@ -35,7 +35,7 @@ describe('Search Pets Use Case', () => {
     })
 
     await petsRepository.create({
-      ...pet,
+      ...petData,
       name: 'Sao Paulo Pet',
       orgId: 'org-02',
       org: {
@@ -52,5 +52,44 @@ describe('Search Pets Use Case', () => {
 
     expect(pets).toHaveLength(1)
     expect(pets).toEqual([expect.objectContaining({ name: 'Jacarei Pet' })])
+  })
+
+  it('should be able to filter pets by their characteristics', async () => {
+    const pet = {
+      about: 'Sobre',
+      age: 'Filhote',
+      energyLevel: 'Baixo',
+      independencyLevel: 'Baixo (precisa de companhia sempre)',
+      environmentRequired: 'Ambiente Amplo',
+      orgId: 'org-01',
+      org: {
+        id: 'org-01',
+        state: 'SP',
+        city: 'Jacarei',
+      },
+      imagesPaths: [],
+      adoptionRequirements: [],
+    }
+
+    await petsRepository.create({
+      ...pet,
+      name: 'Pet Grande',
+      size: 'Grande',
+    })
+
+    await petsRepository.create({
+      ...pet,
+      name: 'Pet Pequeno',
+      size: 'Pequeno',
+    })
+
+    const { pets } = await sut.execute({
+      state: 'SP',
+      city: 'Jacarei',
+      size: 'Grande',
+    })
+
+    expect(pets).toHaveLength(1)
+    expect(pets).toEqual([expect.objectContaining({ name: 'Pet Grande' })])
   })
 })
