@@ -25,6 +25,16 @@ export class InMemoryPetsRepository implements PetsRepository {
       ),
     }
 
+    this.items.push(pet)
+
     return pet
+  }
+
+  async searchManyByLocation(state: string, city: string) {
+    const petsFilteredByLocation = this.items.filter((pet) => {
+      return pet.org?.state === state && pet.org?.city === city
+    })
+
+    return petsFilteredByLocation
   }
 }

@@ -1,3 +1,5 @@
+import { Org } from './org'
+
 interface BasePetModel {
   name: string
   about: string
@@ -7,6 +9,7 @@ interface BasePetModel {
   independencyLevel: string
   environmentRequired: string
   orgId: string
+  org?: Org
 }
 
 export interface CreatePetParams extends BasePetModel {
