@@ -1,5 +1,11 @@
 import { Org } from './org'
 
+interface BaseOrg {
+  id: string
+  state: string
+  city: string
+}
+
 interface BasePetModel {
   name: string
   about: string
@@ -9,11 +15,10 @@ interface BasePetModel {
   independencyLevel: string
   environmentRequired: string
   orgId: string
-  org?: Org
+  org?: Org | BaseOrg
 }
 
 export interface CreatePetParams extends BasePetModel {
-  id?: string
   imagesPaths: string[]
   adoptionRequirements: string[]
 }

@@ -9,7 +9,6 @@ export class CreatePetUseCase {
   constructor(private petsRepository: PetsRepository) {}
 
   async execute({
-    id,
     name,
     about,
     age,
@@ -22,7 +21,6 @@ export class CreatePetUseCase {
     adoptionRequirements,
   }: CreatePetParams): Promise<CreatePetResponse> {
     const pet = await this.petsRepository.create({
-      id,
       name,
       about,
       age,

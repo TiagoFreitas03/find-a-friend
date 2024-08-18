@@ -8,7 +8,7 @@ export class InMemoryPetsRepository implements PetsRepository {
   async create(data: CreatePetParams) {
     const pet: Pet = {
       ...data,
-      id: data.id ?? randomUUID(),
+      id: randomUUID(),
       images: data.imagesPaths.map((imagePath, index) => {
         return {
           id: index,
@@ -56,5 +56,11 @@ export class InMemoryPetsRepository implements PetsRepository {
     }
 
     return petsFiltered
+  }
+
+  async findById(id: string) {
+    const pet = this.items.find((item) => item.id === id)
+
+    return pet ?? null
   }
 }
