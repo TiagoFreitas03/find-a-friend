@@ -1,5 +1,5 @@
 export interface CreateOrgParams {
-  responsibleName?: string
+  responsibleName: string | null
   email: string
   zipCode: string
   address: string
