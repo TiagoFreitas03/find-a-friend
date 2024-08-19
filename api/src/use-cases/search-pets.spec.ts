@@ -5,6 +5,33 @@ import { SearchPetsUseCase } from './search-pets'
 let petsRepository: InMemoryPetsRepository
 let sut: SearchPetsUseCase
 
+const exampleOrgData = {
+  id: '',
+  address: '',
+  email: '',
+  password: '',
+  responsibleName: '',
+  whatsapp: '',
+  zipCode: '',
+  state: '',
+  city: '',
+}
+
+const examplePetData = {
+  id: '',
+  name: '',
+  orgId: '',
+  about: '',
+  age: '',
+  size: '',
+  energyLevel: '',
+  independencyLevel: '',
+  environmentRequired: '',
+  imagesPaths: [],
+  adoptionRequirements: [],
+  org: exampleOrgData,
+}
+
 describe('Search Pets Use Case', () => {
   beforeEach(async () => {
     petsRepository = new InMemoryPetsRepository()
@@ -12,34 +39,21 @@ describe('Search Pets Use Case', () => {
   })
 
   it('should be able to search for pets by location', async () => {
-    const petData = {
-      about: 'Sobre',
-      age: 'Filhote',
-      size: 'Pequenino',
-      energyLevel: 'Baixo',
-      independencyLevel: 'Baixo (precisa de companhia sempre)',
-      environmentRequired: 'Ambiente Amplo',
-      imagesPaths: [],
-      adoptionRequirements: [],
-    }
-
-    await petsRepository.create({
-      ...petData,
-      name: 'Jacarei Pet',
-      orgId: 'org-01',
+    petsRepository.items.push({
+      ...examplePetData,
+      name: 'Pet Jacarei',
       org: {
-        id: 'org-01',
+        ...exampleOrgData,
         state: 'SP',
         city: 'Jacarei',
       },
     })
 
-    await petsRepository.create({
-      ...petData,
-      name: 'Sao Paulo Pet',
-      orgId: 'org-02',
+    petsRepository.items.push({
+      ...examplePetData,
+      name: 'Pet Sao Paulo',
       org: {
-        id: 'org-02',
+        ...exampleOrgData,
         state: 'SP',
         city: 'Sao Paulo',
       },
@@ -51,36 +65,30 @@ describe('Search Pets Use Case', () => {
     })
 
     expect(pets).toHaveLength(1)
-    expect(pets).toEqual([expect.objectContaining({ name: 'Jacarei Pet' })])
+    expect(pets).toEqual([expect.objectContaining({ name: 'Pet Jacarei' })])
   })
 
   it('should be able to filter pets by their characteristics', async () => {
-    const pet = {
-      about: 'Sobre',
-      age: 'Filhote',
-      energyLevel: 'Baixo',
-      independencyLevel: 'Baixo (precisa de companhia sempre)',
-      environmentRequired: 'Ambiente Amplo',
-      orgId: 'org-01',
+    petsRepository.items.push({
+      ...examplePetData,
+      name: 'Large Pet',
+      size: 'Grande',
       org: {
-        id: 'org-01',
+        ...exampleOrgData,
         state: 'SP',
         city: 'Jacarei',
       },
-      imagesPaths: [],
-      adoptionRequirements: [],
-    }
-
-    await petsRepository.create({
-      ...pet,
-      name: 'Pet Grande',
-      size: 'Grande',
     })
 
-    await petsRepository.create({
-      ...pet,
-      name: 'Pet Pequeno',
-      size: 'Pequeno',
+    petsRepository.items.push({
+      ...examplePetData,
+      name: 'Small Pet',
+      size: 'Grande',
+      org: {
+        ...exampleOrgData,
+        state: 'SP',
+        city: 'Jacarei',
+      },
     })
 
     const { pets } = await sut.execute({
@@ -90,6 +98,6 @@ describe('Search Pets Use Case', () => {
     })
 
     expect(pets).toHaveLength(1)
-    expect(pets).toEqual([expect.objectContaining({ name: 'Pet Grande' })])
+    expect(pets).toEqual([expect.objectContaining({ name: 'Large Pet' })])
   })
 })

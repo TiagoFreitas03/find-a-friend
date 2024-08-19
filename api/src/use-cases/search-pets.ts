@@ -18,7 +18,7 @@ export class SearchPetsUseCase {
     size,
     independencyLevel,
   }: SearchPetsParams): Promise<SearchPetsResponse> {
-    const pets = await this.petsRepository.searchManyByLocation({
+    const pets = await this.petsRepository.searchMany({
       state,
       city,
       age,

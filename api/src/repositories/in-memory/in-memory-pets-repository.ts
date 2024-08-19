@@ -30,7 +30,7 @@ export class InMemoryPetsRepository implements PetsRepository {
     return pet
   }
 
-  async searchManyByLocation({ state, city, ...filters }: SearchPetsFilters) {
+  async searchMany({ state, city, ...filters }: SearchPetsFilters) {
     let petsFiltered = this.items.filter((pet) => {
       return pet.org?.state === state && pet.org?.city === city
     })
