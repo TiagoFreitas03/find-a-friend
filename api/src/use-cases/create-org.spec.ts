@@ -7,6 +7,17 @@ import { OrgAlreadyExistsError } from './errors/org-already-exists-error'
 let orgsRepository: InMemoryOrgsRepository
 let sut: CreateOrgUseCase
 
+const exampleOrgData = {
+  address: 'Rua teste',
+  city: 'Jacarei',
+  state: 'SP',
+  email: 'org@example.com',
+  password: '123456',
+  whatsapp: '99 99999-9999',
+  zipCode: '99999999',
+  responsibleName: null,
+}
+
 describe('Create Org Use Case', () => {
   beforeEach(() => {
     orgsRepository = new InMemoryOrgsRepository()
@@ -14,29 +25,13 @@ describe('Create Org Use Case', () => {
   })
 
   it('should be able to create a ORG', async () => {
-    const { org } = await sut.execute({
-      address: 'Rua teste',
-      city: 'Jacarei',
-      state: 'SP',
-      email: 'org@example.com',
-      password: '123456',
-      whatsapp: '99 99999-9999',
-      zipCode: '99999999',
-    })
+    const { org } = await sut.execute(exampleOrgData)
 
     expect(org.id).toEqual(expect.any(String))
   })
 
   it('should hash org password upon registration', async () => {
-    const { org } = await sut.execute({
-      address: 'Rua teste',
-      city: 'Jacarei',
-      state: 'SP',
-      email: 'org@example.com',
-      password: '123456',
-      whatsapp: '99 99999-9999',
-      zipCode: '99999999',
-    })
+    const { org } = await sut.execute(exampleOrgData)
 
     const isPasswordCorrectlyHashed = await compare('123456', org.password)
 
@@ -44,28 +39,10 @@ describe('Create Org Use Case', () => {
   })
 
   it('should not be able to register with same email twice', async () => {
-    const email = 'org@example.com'
+    await sut.execute(exampleOrgData)
 
-    await sut.execute({
-      address: 'Rua teste',
-      city: 'Jacarei',
-      state: 'SP',
-      email,
-      password: '123456',
-      whatsapp: '99 99999-9999',
-      zipCode: '99999999',
-    })
-
-    await expect(() =>
-      sut.execute({
-        address: 'Rua teste',
-        city: 'Jacarei',
-        state: 'SP',
-        email,
-        password: '123456',
-        whatsapp: '99 99999-9999',
-        zipCode: '99999999',
-      }),
-    ).rejects.toBeInstanceOf(OrgAlreadyExistsError)
+    await expect(() => sut.execute(exampleOrgData)).rejects.toBeInstanceOf(
+      OrgAlreadyExistsError,
+    )
   })
 })

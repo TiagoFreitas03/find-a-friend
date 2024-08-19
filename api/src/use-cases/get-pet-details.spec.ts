@@ -14,14 +14,14 @@ describe('Get Pet Details Use Case', () => {
 
   it('should be able to get pet details', async () => {
     const createdPet = await petsRepository.create({
-      name: 'Pet-01',
-      about: 'Sobre Pet-01',
-      age: 'Filhote',
-      size: 'Pequenino',
-      energyLevel: 'Baixo',
-      independencyLevel: 'Baixo (precisa de companhia sempre)',
-      environmentRequired: 'Ambiente Amplo',
-      orgId: 'org-01',
+      name: 'Pet',
+      about: '',
+      age: '',
+      size: '',
+      energyLevel: '',
+      independencyLevel: '',
+      environmentRequired: '',
+      orgId: '',
       imagesPaths: [],
       adoptionRequirements: [],
     })
@@ -30,7 +30,7 @@ describe('Get Pet Details Use Case', () => {
       petId: createdPet.id,
     })
 
-    expect(pet.name).toEqual('Pet-01')
+    expect(pet.name).toEqual('Pet')
   })
 
   it('should not be able to get pet details with wrong id', async () => {

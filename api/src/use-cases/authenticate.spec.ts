@@ -22,6 +22,7 @@ describe('Authenticate Use Case', () => {
       password: await hash('123456', 6),
       whatsapp: '99 99999-9999',
       zipCode: '99999999',
+      responsibleName: null,
     })
 
     const { org } = await sut.execute({
@@ -50,6 +51,7 @@ describe('Authenticate Use Case', () => {
       password: await hash('123456', 6),
       whatsapp: '99 99999-9999',
       zipCode: '99999999',
+      responsibleName: null,
     })
 
     await expect(() =>
