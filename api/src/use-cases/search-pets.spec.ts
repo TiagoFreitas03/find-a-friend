@@ -83,7 +83,7 @@ describe('Search Pets Use Case', () => {
     petsRepository.items.push({
       ...examplePetData,
       name: 'Small Pet',
-      size: 'Grande',
+      size: 'Pequeno',
       org: {
         ...exampleOrgData,
         state: 'SP',
