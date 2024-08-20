@@ -6,11 +6,17 @@ export class PrismaPetsRepository implements PetsRepository {
   async create({
     imagesPaths,
     adoptionRequirements,
+    orgId,
     ...data
   }: CreatePetParams) {
     const pet = await prisma.pet.create({
       data: {
         ...data,
+        org: {
+          connect: {
+            id: orgId,
+          },
+        },
         images: {
           createMany: {
             data: imagesPaths.map((path) => {
